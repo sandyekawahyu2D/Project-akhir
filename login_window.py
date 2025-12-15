@@ -1,47 +1,20 @@
 # -*- coding: utf-8 -*-
-
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
-import sys
 from pengguna import Pengguna
-
+import sys
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         MainWindow.setStyleSheet("""
-        QWidget {
-            background-color: #f4f6f8;
-            font-family: Arial;
-        }
-        QLabel#title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-        }
-        QFrame {
-            background: white;
-            border-radius: 15px;
-        }
-        QLineEdit {
-            background-color: #f1f3f4;
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 15px;
-            border: 1px solid #ddd;
-        }
-        QPushButton {
-            background-color: #00bfff;
-            color: white;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px;
-        }
-        QPushButton:hover {
-            background-color: #009acd;
-        }
+        QWidget { background-color: #f4f6f8; font-family: Arial; }
+        QLabel#title { font-size: 28px; font-weight: bold; color: #333; }
+        QFrame { background: white; border-radius: 15px; }
+        QLineEdit { background-color: #f1f3f4; border-radius: 10px; padding: 12px; font-size: 15px; border: 1px solid #ddd; }
+        QPushButton { background-color: #00bfff; color: white; border-radius: 10px; font-size: 16px; font-weight: bold; padding: 12px; }
+        QPushButton:hover { background-color: #009acd; }
         """)
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -78,7 +51,7 @@ class LoginWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
+        self.setWindowTitle("Login Aplikasi")
         self.ui.pushButton.clicked.connect(self.login)
 
     def login(self):
@@ -89,19 +62,21 @@ class LoginWindow(QMainWindow):
         user = pengguna.login(username, password)
 
         if user:
-            role = user[4]
+            role = user[4]  # level
             QMessageBox.information(self, "Berhasil", f"Login sebagai {role}")
 
             if role == "admin":
+                # Import admin window hanya saat login
                 from admin_window import AdminWindow
-                self.admin = AdminWindow()
-                self.admin.show()
+                self.admin_window = AdminWindow(self)
+                self.admin_window.show()
+                self.hide()
             else:
-                QMessageBox.information(
-                    self, "Info", "Dashboard user belum dibuat"
-                )
-
-            self.close()
+                # Import user window
+                from user_window import UserWindow
+                self.user_window = UserWindow(self, {"id": user[0], "nama": user[3]})
+                self.user_window.show()
+                self.hide()
         else:
             QMessageBox.warning(self, "Gagal", "Username atau password salah")
 
