@@ -3,7 +3,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 import sys
-from login_window import LoginWindow
 
 
 class Ui_MainWindow(object):
@@ -103,8 +102,10 @@ class AdminWindow(QMainWindow):
             self, "Logout", "Yakin ingin logout?",
             QMessageBox.Yes | QMessageBox.No
         )
+
         if confirm == QMessageBox.Yes:
             self.close()
+            from login_window import LoginWindow  # ✅ IMPORT DI SINI
             self.login = LoginWindow()
             self.login.show()
 
