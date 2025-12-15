@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 import sys
 from pengguna import Pengguna
+from admin_window import AdminWindow
 
 
 class Ui_MainWindow(object):
@@ -22,18 +23,15 @@ class Ui_MainWindow(object):
             background-color: #f4f6f8;
             font-family: Arial;
         }
-
         QLabel#title {
             font-size: 28px;
             font-weight: bold;
             color: #333;
         }
-
         QFrame {
             background: white;
             border-radius: 15px;
         }
-
         QLineEdit {
             background-color: #f1f3f4;
             border-radius: 10px;
@@ -41,12 +39,6 @@ class Ui_MainWindow(object):
             font-size: 15px;
             border: 1px solid #ddd;
         }
-
-        QLineEdit:focus {
-            border: 2px solid #00bfff;
-            background-color: white;
-        }
-
         QPushButton {
             background-color: #00bfff;
             color: white;
@@ -55,7 +47,6 @@ class Ui_MainWindow(object):
             font-weight: bold;
             padding: 12px;
         }
-
         QPushButton:hover {
             background-color: #009acd;
         }
@@ -65,7 +56,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setFixedSize(380, 320)
+        self.frame.setFixedSize(380, 300)
         self.frame.move(210, 160)
 
         layout = QtWidgets.QVBoxLayout(self.frame)
@@ -106,8 +97,15 @@ class LoginWindow(QMainWindow):
         user = pengguna.login(username, password)
 
         if user:
-            role = user[4]
+            role = user[4]  # id, nama, username, password, role
             QMessageBox.information(self, "Berhasil", f"Login sebagai {role}")
+
+            if role == "admin":
+                self.admin = AdminWindow()
+                self.admin.show()
+            else:
+                QMessageBox.information(self, "Info", "Dashboard user belum dibuat")
+
             self.close()
         else:
             QMessageBox.warning(self, "Gagal", "Username atau password salah")
