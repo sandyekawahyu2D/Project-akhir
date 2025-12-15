@@ -89,11 +89,11 @@ class LoginWindow(QMainWindow):
         user = pengguna.login(username, password)
 
         if user:
-            role = user[4]  # id, nama, username, password, role
+            role = user[4]
             QMessageBox.information(self, "Berhasil", f"Login sebagai {role}")
 
             if role == "admin":
-                from admin_window import AdminWindow  # ✅ IMPORT DI SINI
+                from admin_window import AdminWindow
                 self.admin = AdminWindow()
                 self.admin.show()
             else:
