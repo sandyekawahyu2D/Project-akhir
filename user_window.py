@@ -18,7 +18,7 @@ class UserWindow(QMainWindow):
         layout.setAlignment(Qt.AlignCenter)
         layout.setSpacing(20)
 
-        lbl = QLabel(f"Selamat Datang, {self.user['nama']}")
+        lbl = QLabel(f"Selamat Datang")
         lbl.setStyleSheet("font-size:20px; font-weight:bold;")
         lbl.setAlignment(Qt.AlignCenter)
 
